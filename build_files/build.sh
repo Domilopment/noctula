@@ -32,13 +32,13 @@ EOF
 
 # this adss unity repo installs unityhub
 # add unity repo
-sh -c 'echo -e "[unityhub]\nname=Unity Hub\nbaseurl=https://hub.unity3d.com/linux/repos/rpm/stable\nenabled=1\ngpgcheck=1\ngpgkey=https://hub.unity3d.com/linux/repos/rpm/stable/repodata/repomd.xml.key\nrepo_gpgcheck=1" > /etc/yum.repos.d/unityhub.repo'
+#sh -c 'echo -e "[unityhub]\nname=Unity Hub\nbaseurl=https://hub.unity3d.com/linux/repos/rpm/stable\nenabled=1\ngpgcheck=1\ngpgkey=https://hub.unity3d.com/linux/repos/rpm/stable/repodata/repomd.xml.key\nrepo_gpgcheck=1" > /etc/yum.repos.d/unityhub.repo'
 # install unityhub
-dnf5 install -y unityhub
+#dnf5 install -y unityhub
 # copy installation files to usr/lib/opt/
-mv /var/opt/unityhub /usr/lib/opt/unityhub
+#mv /var/opt/unityhub /usr/lib/opt/unityhub
 # Disable the repo afterwards (sets enabled=0)
-sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/unityhub.repo
+#sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/unityhub.repo
 
 # Use a COPR Example:
 #
