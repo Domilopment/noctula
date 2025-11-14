@@ -7,7 +7,7 @@ set -ouex pipefail
 # Copied from https://github.com/ublue-os/aurora/blob/main/build_files/base/03-install-kernel-akmods.sh
 
 # Fetch Nvidia RPMs
-skopeo copy --retry-times 3 docker://ghcr.io/ublue-os/akmods-nvidia:coreos-stable-"$(rpm -E %fedora)"-"${rpm -q kernel}" dir:/tmp/akmods-rpms
+skopeo copy --retry-times 3 docker://ghcr.io/ublue-os/akmods-nvidia:coreos-stable-"$(rpm -E %fedora)"-"${uname -r}" dir:/tmp/akmods-rpms
 NVIDIA_TARGZ=$(jq -r '.layers[].digest' </tmp/akmods-rpms/manifest.json | cut -d : -f 2)
 tar -xvzf /tmp/akmods-rpms/"$NVIDIA_TARGZ" -C /tmp/
 mv /tmp/rpms/* /tmp/akmods-rpms/
