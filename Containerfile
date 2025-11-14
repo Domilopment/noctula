@@ -14,7 +14,7 @@ FROM ghcr.io/ublue-os/aurora-dx:stable
 # Fedora base image: quay.io/fedora/fedora-bootc:41
 # CentOS base images: quay.io/centos-bootc/centos-bootc:stream10
 
-ARG KERNEL="6.14.4-200.fc42.x86_64"
+ARG KERNEL="6.16.10-200.fc42.x86_64"
 
 ### MODIFICATIONS
 ## make modifications desired in your image and install packages by modifying the build.sh script
