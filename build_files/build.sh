@@ -16,7 +16,7 @@ mv /tmp/rpms/* /tmp/akmods-rpms/
 dnf5 config-manager setopt excludepkgs=golang-github-nvidia-container-toolkit
 
 # Install Nvidia RPMs
-ghcurl "https://raw.githubusercontent.com/ublue-os/main/main/build_files/nvidia-install.sh" -o /tmp/nvidia-install.sh
+curl --retry 3 -Lo /tmp/nvidia-install.sh https://raw.githubusercontent.com/ublue-os/main/main/build_files/nvidia-install.sh
 chmod +x /tmp/nvidia-install.sh
 IMAGE_NAME="kinoite" RPMFUSION_MIRROR="" /tmp/nvidia-install.sh
 rm -f /usr/share/vulkan/icd.d/nouveau_icd.*.json
