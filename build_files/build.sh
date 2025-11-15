@@ -3,7 +3,7 @@
 set -ouex pipefail
 
 FEDORA_VERSION=$(rpm -E %fedora)
-KERNEL_VERSION=$(rpm -q kernel)
+KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 ### Nvidia AKMODS
 
