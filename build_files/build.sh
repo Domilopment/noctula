@@ -11,7 +11,7 @@ if [[ -f /etc/yum.repos.d/_copr_ublue-os-staging.repo ]]; then
     sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/_copr_ublue-os-staging.repo
 else
     # Otherwise, retrieve the repo file for staging
-    curl -Lo /etc/yum.repos.d/_copr_ublue-os-staging.repo https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/fedora-"${FRELEASE}"/ublue-os-staging-fedora-"${FRELEASE}".repo
+    curl -Lo /etc/yum.repos.d/_copr_ublue-os-staging.repo https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/fedora-"${rpm -E %fedora}"/ublue-os-staging-fedora-"${rpm -E %fedora}".repo
 fi
 
 # Fetch Nvidia RPMs
