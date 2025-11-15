@@ -26,6 +26,9 @@ mv /tmp/rpms/* /tmp/akmods-rpms/
 # Exclude the Golang Nvidia Container Toolkit in Fedora Repo
 dnf5 config-manager setopt excludepkgs=golang-github-nvidia-container-toolkit
 
+# only for debugd
+dnf5 repoquery supergfxctl --repo copr:ublue-os/staging || echo "supergfxctl NOT FOUND"
+
 # Install Nvidia RPMs
 curl --retry 3 -Lo /tmp/nvidia-install.sh https://raw.githubusercontent.com/ublue-os/main/main/build_files/nvidia-install.sh
 chmod +x /tmp/nvidia-install.sh
