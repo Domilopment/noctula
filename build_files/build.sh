@@ -49,8 +49,6 @@ mkdir -p /var/usrlocal/bin/
 curl -L -o "/tmp/docker-desktop-x86_64.rpm" "https://desktop.docker.com/linux/main/amd64/docker-desktop-x86_64.rpm?utm_source=docker"
 # install docker desktop
 dnf5 install -y "/tmp/docker-desktop-x86_64.rpm"
-# copy installation files to usr/lib/opt/
-mv /var/opt/docker-desktop /usr/lib/opt/docker-desktop
 # Register path symlink
 cat >/usr/lib/tmpfiles.d/docker-desktop.conf <<EOF
 d /var/usrlocal/bin 0755 root root - -
