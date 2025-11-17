@@ -46,7 +46,7 @@ EOF
 
 # this installs docker desktop from website
 # download docker desktop rpm
-cuurl --retry 3 -Lo "/tmp/docker-desktop-x86_64.rpm" "https://desktop.docker.com/linux/main/amd64/docker-desktop-x86_64.rpm?utm_source=docker"
+curl --retry 3 -Lo "/tmp/docker-desktop-x86_64.rpm" "https://desktop.docker.com/linux/main/amd64/docker-desktop-x86_64.rpm?utm_source=docker"
 # install docker desktop
 dnf5 install -y "/tmp/docker-desktop-x86_64.rpm"
 # Register path symlink
