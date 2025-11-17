@@ -41,12 +41,12 @@ EOF
 # dnf5 install -y tmux # Example: already installed (aurora-dx image)
 
 # Create the real target directory to fix broken symlink
-mkdir -p /var/opt
-mkdir -p /var/usrlocal/bin/
+#mkdir -p /var/opt
+#mkdir -p /var/usrlocal/bin/
 
 # this installs docker desktop from website
 # download docker desktop rpm
-curl -L -o "/tmp/docker-desktop-x86_64.rpm" "https://desktop.docker.com/linux/main/amd64/docker-desktop-x86_64.rpm?utm_source=docker"
+cuurl --retry 3 -Lo "/tmp/docker-desktop-x86_64.rpm" "https://desktop.docker.com/linux/main/amd64/docker-desktop-x86_64.rpm?utm_source=docker"
 # install docker desktop
 dnf5 install -y "/tmp/docker-desktop-x86_64.rpm"
 # Register path symlink
