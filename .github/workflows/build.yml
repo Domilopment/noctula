@@ -64,6 +64,16 @@ jobs:
           # https://linux.die.net/man/1/date
           echo "date=$(date -u +%Y\-%m\-%d\T%H\:%M\:%S\Z)" >> $GITHUB_OUTPUT
 
+      - name: Check if Wednesday
+        id: weekday
+        run: |
+          # determain if the actual day is Wednesday to create stable image
+          if [ "$(date -u +%u)" = "3" ]; then
+            echo "is_wednesday=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_wednesday=false" >> $GITHUB_OUTPUT
+          fi
+
       # Image metadata for https://artifacthub.io/ - This is optional but is highly recommended so we all can get a index of all the custom images
       # The metadata by itself is not going to do anything, you choose if you want your image to be on ArtifactHub or not.
       - name: Image Metadata
@@ -76,6 +86,9 @@ jobs:
             type=raw,value=${{ env.DEFAULT_TAG }}
             type=raw,value=${{ env.DEFAULT_TAG }}.{{date 'YYYYMMDD'}}
             type=raw,value={{date 'YYYYMMDD'}}
+            # Only generate stable tags on Wednesday
+            type=raw,value=stable,enable=${{ steps.weekday.outputs.is_wednesday == 'true' }}
+            type=raw,value=stable.{{date 'YYYYMMDD'}},enable=${{ steps.weekday.outputs.is_wednesday == 'true' }}
             type=sha,enable=${{ github.event_name == 'pull_request' }}
             type=ref,event=pr
           labels: |
