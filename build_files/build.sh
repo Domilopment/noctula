@@ -6,11 +6,15 @@ FEDORA_VERSION=$(rpm -E %fedora)
 KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 
-# Disable multilib to prevent i686 packages from being installed
-echo "Disabling multilib repos..."
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora*.repo || true
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/rpmfusion*.repo || true
-dnf5 clean all
+echo "Removing multilib Mesa packages to prevent OSTree conflicts..."
+rpm-ostree override remove \
+  mesa-dri-drivers.i686 \
+    mesa-filesystem.i686 \
+    mesa-libEGL.i686 \
+    mesa-libGL.i686 \
+    mesa-libgbm.i686 \
+    mesa-va-drivers.i686 \
+    mesa-vulkan-drivers.i686 || true
 
 ### Nvidia AKMODS
 
