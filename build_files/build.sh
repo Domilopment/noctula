@@ -6,15 +6,15 @@ FEDORA_VERSION=$(rpm -E %fedora)
 KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 
-echo "Removing multilib Mesa packages to prevent OSTree conflicts..."
-rpm-ostree override remove \
-  mesa-dri-drivers \
+echo "Upgrading x86_64 Mesa packages to match i686 versions..."
+dnf5 upgrade -y \
+    mesa-dri-drivers \
     mesa-filesystem \
     mesa-libEGL \
     mesa-libGL \
     mesa-libgbm \
     mesa-va-drivers \
-    mesa-vulkan-drivers || true
+    mesa-vulkan-drivers
 
 ### Nvidia AKMODS
 
