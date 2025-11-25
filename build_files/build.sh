@@ -8,13 +8,13 @@ KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 echo "Removing multilib Mesa packages to prevent OSTree conflicts..."
 rpm-ostree override remove \
-  mesa-dri-drivers.i686 \
-    mesa-filesystem.i686 \
-    mesa-libEGL.i686 \
-    mesa-libGL.i686 \
-    mesa-libgbm.i686 \
-    mesa-va-drivers.i686 \
-    mesa-vulkan-drivers.i686 || true
+  mesa-dri-drivers \
+    mesa-filesystem \
+    mesa-libEGL \
+    mesa-libGL \
+    mesa-libgbm \
+    mesa-va-drivers \
+    mesa-vulkan-drivers || true
 
 ### Nvidia AKMODS
 
