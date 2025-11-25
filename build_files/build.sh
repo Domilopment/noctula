@@ -6,6 +6,12 @@ FEDORA_VERSION=$(rpm -E %fedora)
 KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 
+# Disable multilib to prevent i686 packages from being installed
+echo "Disabling multilib repos..."
+sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora*.repo || true
+sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/rpmfusion*.repo || true
+dnf5 clean all
+
 ### Nvidia AKMODS
 
 # Copied from https://github.com/ublue-os/aurora/blob/main/build_files/base/03-install-kernel-akmods.sh
@@ -43,9 +49,6 @@ EOF
 # Create the real target directory to fix broken symlink
 #mkdir -p /var/opt
 #mkdir -p /var/usrlocal/bin/
-
-# Disable multilib
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora*.repo || true
 
 # this installs docker desktop from website
 # download docker desktop rpm
