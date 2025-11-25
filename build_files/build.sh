@@ -44,6 +44,9 @@ EOF
 #mkdir -p /var/opt
 #mkdir -p /var/usrlocal/bin/
 
+# Disable multilib
+sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora*.repo || true
+
 # this installs docker desktop from website
 # download docker desktop rpm
 curl --retry 3 -Lo "/tmp/docker-desktop-x86_64.rpm" "https://desktop.docker.com/linux/main/amd64/docker-desktop-x86_64.rpm?utm_source=docker"
