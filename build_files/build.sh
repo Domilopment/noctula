@@ -30,6 +30,7 @@ mv /tmp/rpms/* /tmp/akmods-rpms/
 dnf5 config-manager setopt excludepkgs=golang-github-nvidia-container-toolkit
 
 # Install Nvidia RPMs
+chmod +x /ctx/nvidia-install.sh
 IMAGE_NAME="" RPMFUSION_MIRROR="" /ctx/nvidia-install.sh
 rm -f /usr/share/vulkan/icd.d/nouveau_icd.*.json
 ln -sf libnvidia-ml.so.1 /usr/lib64/libnvidia-ml.so
