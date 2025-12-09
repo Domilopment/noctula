@@ -38,7 +38,7 @@ MULTILIB=(
 
 dnf5 install -y "${MULTILIB[@]}"
 
-# enable repos provided by ublue-os-nvidia-addons (not enabling fedora-nvidia-lts)
+# enable repos provided by ublue-os-nvidia-addons (enabling fedora-nvidia-lts)
 dnf5 config-manager setopt fedora-nvidia-lts.enabled=1 nvidia-container-toolkit.enabled=1
 
 # Disable Multimedia
