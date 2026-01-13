@@ -101,6 +101,6 @@ chmod 0600 "/lib/modules/${KERNEL_VERSION}/initramfs.img"
 rm -rf /tmp/*
 
 if [ ! -L /var/run ]; then
-  rmdir /var/run
+  rm -rf /var/run
   ln -s /run /var/run
 fi
