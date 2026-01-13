@@ -99,3 +99,8 @@ chmod 0600 "/lib/modules/${KERNEL_VERSION}/initramfs.img"
 # cleanup stage
 # Clean temporary files
 rm -rf /tmp/*
+
+if [ ! -L /var/run ]; then
+  rmdir /var/run
+  ln -s /run /var/run
+fi
