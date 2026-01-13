@@ -99,3 +99,10 @@ chmod 0600 "/lib/modules/${KERNEL_VERSION}/initramfs.img"
 # cleanup stage
 # Clean temporary files
 rm -rf /tmp/*
+
+# We can clean those up, they are "discarded" by bootc anyway
+# https://bootc-dev.github.io/bootc/filesystem.html#filesystem
+find /var -mindepth 1 -delete
+find /boot -mindepth 1 -delete
+find /tmp -mindepth 1 -delete
+mkdir -p /var /boot /tmp
