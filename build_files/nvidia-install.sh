@@ -36,7 +36,7 @@ MULTILIB=(
     mesa-vulkan-drivers.i686
 )
 
-dnf5 install -y --disableexcludes=all "${MULTILIB[@]}"
+dnf5 install -y --setopt=disable_excludes=* "${MULTILIB[@]}"
 
 # enable repos provided by ublue-os-nvidia-addons (enabling fedora-nvidia-lts)
 dnf5 config-manager setopt fedora-nvidia-lts.enabled=1 nvidia-container-toolkit.enabled=1
@@ -67,7 +67,7 @@ else
     VARIANT_PKGS=""
 fi
 
-dnf5 install -y --disableexcludes=all \
+dnf5 install -y --setopt=disable_excludes=* \
     libnvidia-fbc \
     libnvidia-ml.i686 \
     libva-nvidia-driver \
