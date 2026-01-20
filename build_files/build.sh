@@ -6,7 +6,8 @@ FEDORA_VERSION=$(rpm -E %fedora)
 KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 
-dnf5 config-manager --dump | grep -i exclude
+grep -R "^exclude" /etc/dnf/dnf.conf
+
 
 ### Nvidia AKMODS
 
