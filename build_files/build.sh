@@ -20,6 +20,7 @@ mv /tmp/rpms/* /tmp/akmods-rpms/
 dnf5 config-manager setopt excludepkgs=golang-github-nvidia-container-toolkit
 
 # Install Nvidia RPMs
+dnf5 versionlock delete '*mesa*.i686'
 cp /ctx/nvidia-install.sh /tmp/nvidia-install.sh
 chmod +x /tmp/nvidia-install.sh
 dnf5 -y copr enable ublue-os/staging
