@@ -26,17 +26,17 @@ dnf5 install -y "${AKMODNV_PATH}"/ublue-os/ublue-os-nvidia-addons-*.rpm
 
 # Install MULTILIB packages from negativo17-multimedia prior to disabling repo
 
-#MULTILIB=(
-#    mesa-dri-drivers.i686
-#    mesa-filesystem.i686
-#    mesa-libEGL.i686
-#    mesa-libGL.i686
-#    mesa-libgbm.i686
-#    mesa-va-drivers.i686
-#    mesa-vulkan-drivers.i686
-#)
+MULTILIB=(
+    mesa-dri-drivers.i686
+    mesa-filesystem.i686
+    mesa-libEGL.i686
+    mesa-libGL.i686
+    mesa-libgbm.i686
+    mesa-va-drivers.i686
+    mesa-vulkan-drivers.i686
+)
 
-#dnf5 install -y "${MULTILIB[@]}"
+dnf5 install -y --disableexcludes=all "${MULTILIB[@]}"
 
 # enable repos provided by ublue-os-nvidia-addons (enabling fedora-nvidia-lts)
 dnf5 config-manager setopt fedora-nvidia-lts.enabled=1 nvidia-container-toolkit.enabled=1
@@ -67,7 +67,7 @@ else
     VARIANT_PKGS=""
 fi
 
-dnf5 install -y \
+dnf5 install -y --disableexcludes=all \
     libnvidia-fbc \
     libnvidia-ml.i686 \
     libva-nvidia-driver \
