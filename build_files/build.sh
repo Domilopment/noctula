@@ -6,8 +6,7 @@ FEDORA_VERSION=$(rpm -E %fedora)
 KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 #debug mesa-*versionlock
-dnf5 repolist --all
-dnf5 versionlock list
+dnf5 repoquery mesa-dri-drivers.i686 --available
 
 echo "Upgrading x86_64 Mesa packages to match i686 versions..."
 dnf5 upgrade -y \
