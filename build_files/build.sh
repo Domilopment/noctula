@@ -6,8 +6,7 @@ FEDORA_VERSION=$(rpm -E %fedora)
 KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 
-grep -R "^exclude" /etc/dnf/dnf.conf
-
+grep -R "exclude" /etc/yum.repos.d || true
 
 ### Nvidia AKMODS
 
