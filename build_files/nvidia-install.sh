@@ -36,7 +36,7 @@ dnf5 install -y "${AKMODNV_PATH}"/ublue-os/ublue-os-nvidia-addons-*.rpm
 #    mesa-vulkan-drivers.i686
 #)
 
-dnf5 install -y "${MULTILIB[@]}"
+#dnf5 install -y "${MULTILIB[@]}"
 
 # enable repos provided by ublue-os-nvidia-addons (enabling fedora-nvidia-lts)
 dnf5 config-manager setopt fedora-nvidia-lts.enabled=1 nvidia-container-toolkit.enabled=1
