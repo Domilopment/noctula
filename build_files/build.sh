@@ -2,12 +2,12 @@
 
 set -ouex pipefail
 
-FEDORA_VERSION=$(rpm -E %fedora)
-KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
-
-
 mkdir -p /usr/lib/dnf/plugins
 cp -a /ctx/usr/lib/dnf/plugins/copr.vendor.conf /usr/lib/dnf/plugins/
+
+
+FEDORA_VERSION=$(rpm -E %fedora)
+KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 ### Nvidia AKMODS
 
