@@ -2,12 +2,16 @@
 
 set -ouex pipefail
 
-mkdir -p /usr/lib/dnf/plugins
-cp -a /ctx/usr/lib/dnf/plugins/copr.vendor.conf /usr/lib/dnf/plugins/
-
-
 FEDORA_VERSION=$(rpm -E %fedora)
 KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
+
+
+install -Dm644 /dev/stdin /etc/dnf/plugins/copr.conf <<EOF
+[main]
+distribution=fedora
+releasever=${FEDORA_VERSION}
+EOF
+
 
 ### Nvidia AKMODS
 
