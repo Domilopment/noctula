@@ -37,6 +37,7 @@ MULTILIB=(
 )
 
 dnf5 install -y \
+    --allowerasing \
     --setopt=disable_excludes=* \
     --setopt=multilib_policy=all \
     "${MULTILIB[@]}"
