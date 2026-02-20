@@ -69,7 +69,7 @@ else
     VARIANT_PKGS=""
 fi
 
-dnf5 install -y --setopt=disable_excludes=* --setopt=scriptlet_failure_action=warn \
+dnf5 install -y --setopt=disable_excludes=* \
     libnvidia-fbc \
     libnvidia-ml.i686 \
     libva-nvidia-driver \
