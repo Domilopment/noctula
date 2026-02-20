@@ -31,9 +31,9 @@ dnf5 config-manager setopt excludepkgs=golang-github-nvidia-container-toolkit
 # Install Nvidia RPMs
 cp /ctx/nvidia-install.sh /tmp/nvidia-install.sh
 chmod +x /tmp/nvidia-install.sh
-dnf5 -y copr enable ublue-os/staging
+#dnf5 -y copr enable ublue-os/staging
 IMAGE_NAME="kinoite" RPMFUSION_MIRROR="" /tmp/nvidia-install.sh
-dnf5 -y copr disable ublue-os/staging
+#dnf5 -y copr disable ublue-os/staging
 rm -f /usr/share/vulkan/icd.d/nouveau_icd.*.json
 ln -sf libnvidia-ml.so.1 /usr/lib64/libnvidia-ml.so
 tee /usr/lib/bootc/kargs.d/00-nvidia.toml <<EOF
