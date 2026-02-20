@@ -36,8 +36,8 @@ MULTILIB=(
     mesa-vulkan-drivers.i686
 )
 
+dnf5 upgrade -y "${MULTILIB[@]/%.i686/.x86_64}"   # ensure latest x86_64
 dnf5 install -y \
-    --allowerasing \
     --setopt=disable_excludes=* \
     --setopt=multilib_policy=all \
     "${MULTILIB[@]}"
