@@ -6,15 +6,6 @@ FEDORA_VERSION=$(rpm -E %fedora)
 KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 
-# This override is to handle the default behavior of dnf5 using ID at /etc/os-release
-# to select which chroot gets used to fetch the copr repo.
-install -Dm644 /dev/stdin /etc/dnf/plugins/copr.conf <<EOF
-[main]
-distribution=fedora
-releasever=${FEDORA_VERSION}
-EOF
-
-
 ### Nvidia AKMODS
 
 # Copied from https://github.com/ublue-os/aurora/blob/main/build_files/base/03-install-kernel-akmods.sh
