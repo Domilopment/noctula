@@ -83,12 +83,12 @@ dnf5 install -y --setopt=disable_excludes=* \
     "${AKMODNV_PATH}"/kmods/kmod-nvidia-"${KERNEL_VERSION}"-"${NVIDIA_AKMOD_VERSION}"."${DIST_ARCH}".rpm
 
 # Ensure the version of the Nvidia module matches the driver
-#KMOD_VERSION="$(rpm -q --queryformat '%{VERSION}' kmod-nvidia)"
-#DRIVER_VERSION="$(rpm -q --queryformat '%{VERSION}' nvidia-driver)"
-#if [ "$KMOD_VERSION" != "$DRIVER_VERSION" ]; then
-#    echo "Error: kmod-nvidia version ($KMOD_VERSION) does not match nvidia-driver version ($DRIVER_VERSION)"
-#    exit 1
-#fi
+KMOD_VERSION="$(rpm -q --queryformat '%{VERSION}' kmod-nvidia)"
+DRIVER_VERSION="$(rpm -q --queryformat '%{VERSION}' nvidia-driver)"
+if [ "$KMOD_VERSION" != "$DRIVER_VERSION" ]; then
+    echo "Error: kmod-nvidia version ($KMOD_VERSION) does not match nvidia-driver version ($DRIVER_VERSION)"
+    exit 1
+fi
 
 ## nvidia post-install steps
 # disable repos provided by ublue-os-nvidia-addons
