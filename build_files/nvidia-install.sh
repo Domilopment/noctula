@@ -71,7 +71,7 @@ fi
 
 dnf5 install -y \
     --setopt=disable_excludes=* \
-    --exclude=akmod-nvidia
+    --exclude=akmod-nvidia \
     libnvidia-fbc \
     libnvidia-ml.i686 \
     libva-nvidia-driver \
