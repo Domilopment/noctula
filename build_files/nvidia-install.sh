@@ -69,7 +69,7 @@ else
     VARIANT_PKGS=""
 fi
 
-sudo dnf5 install -y --setopt=disable_excludes=* mesa-libgbm.i686
+sudo dnf5 install -y --setopt=disable_excludes=* mesa-libgbm
 dnf5 install -y \
     libnvidia-fbc \
     libnvidia-ml.i686 \
