@@ -29,6 +29,7 @@ OVERRIDES=(
 
 dnf versionlock delete "${OVERRIDES[@]}"
 dnf5 distro-sync --skip-unavailable -y --repo='fedora-multimedia' "${OVERRIDES[@]}"
+dnf upgrade "${OVERRIDES[@]}"
 dnf5 versionlock add "${OVERRIDES[@]}"
 
 ### Nvidia AKMODS
