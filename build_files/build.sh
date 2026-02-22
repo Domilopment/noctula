@@ -6,6 +6,33 @@ FEDORA_VERSION=$(rpm -E %fedora)
 KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 
+### Aurora package Overrides
+
+# Copied from https://github.com/ublue-os/aurora/blob/stable/build_files/base/03-packages.sh
+
+# use override to replace mesa and others with less crippled versions
+OVERRIDES=(
+    "intel-gmmlib"
+    "intel-mediasdk"
+    "intel-vpl-gpu-rt"
+    "libheif"
+    "libva"
+    "libva-intel-media-driver"
+    "mesa-dri-drivers"
+    "mesa-filesystem"
+    "mesa-libEGL"
+    "mesa-libGL"
+    "mesa-libgbm"
+    "mesa-va-drivers"
+    "mesa-vulkan-drivers"
+)
+
+dnf5 distro-sync --skip-unavailable -y --repo='fedora-multimedia' "${OVERRIDES[@]}"
+dnf5 versionlock add "${OVERRIDES[@]}"
+# All DNF-related operations should be done here whenever possible
+#shellcheck source=build_files/shared/copr-helpers.sh
+source /ctx/build_files/shared/copr-helpers.sh
+
 ### Nvidia AKMODS
 
 # Copied from https://github.com/ublue-os/aurora/blob/main/build_files/base/03-install-kernel-akmods.sh
