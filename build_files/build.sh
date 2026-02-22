@@ -27,6 +27,7 @@ OVERRIDES=(
     "mesa-vulkan-drivers"
 )
 
+dnf versionlock delete "${OVERRIDES[@]}"
 dnf5 distro-sync --skip-unavailable -y --repo='fedora-multimedia' "${OVERRIDES[@]}"
 dnf5 versionlock add "${OVERRIDES[@]}"
 
