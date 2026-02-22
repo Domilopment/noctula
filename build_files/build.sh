@@ -29,9 +29,6 @@ OVERRIDES=(
 
 dnf5 distro-sync --skip-unavailable -y --repo='fedora-multimedia' "${OVERRIDES[@]}"
 dnf5 versionlock add "${OVERRIDES[@]}"
-# All DNF-related operations should be done here whenever possible
-#shellcheck source=build_files/shared/copr-helpers.sh
-source /ctx/build_files/shared/copr-helpers.sh
 
 ### Nvidia AKMODS
 
