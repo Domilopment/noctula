@@ -61,10 +61,6 @@ fi
 
 source "${AKMODNV_PATH}"/kmods/nvidia-vars
 
-
-dnf5 --showduplicates --repo=fedora-nvidia-lts list nvidia-driver
-
-
 if [[ "${IMAGE_NAME}" == "kinoite" ]]; then
     VARIANT_PKGS="supergfxctl-plasmoid supergfxctl"
 elif [[ "${IMAGE_NAME}" == "silverblue" ]]; then
@@ -84,7 +80,7 @@ dnf5 install -y \
     nvidia-settings \
     nvidia-container-toolkit \
     ${VARIANT_PKGS} \
-    "${AKMODNV_PATH}"/kmods/kmod-nvidia-"${KERNEL_VERSION}"-"${NVIDIA_AKMOD_VERSION}"."${DIST_ARCH}".rpm \
+    "${AKMODNV_PATH}"/kmods/kmod-nvidia-"${KERNEL_VERSION}"-"${NVIDIA_AKMOD_VERSION}"."${DIST_ARCH}".rpm
 
 # Ensure the version of the Nvidia module matches the driver
 KMOD_VERSION="$(rpm -q --queryformat '%{VERSION}' kmod-nvidia)"
