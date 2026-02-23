@@ -10,18 +10,7 @@ KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 # Copied from https://github.com/ublue-os/aurora/blob/stable/build_files/base/03-packages.sh
 
-# use override to replace mesa and others with less crippled versions
-OVERRIDES=(
-    "mesa-dri-drivers"
-    "mesa-filesystem"
-    "mesa-libEGL"
-    "mesa-libGL"
-    "mesa-libgbm"
-    "mesa-va-drivers"
-    "mesa-vulkan-drivers"
-)
-
-dnf5 distro-sync -y "${OVERRIDES[@]}"
+dnf5 distro-sync -y mesa/*
 
 ### Nvidia AKMODS
 
