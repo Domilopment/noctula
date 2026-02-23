@@ -61,6 +61,11 @@ fi
 
 source "${AKMODNV_PATH}"/kmods/nvidia-vars
 
+
+KMOD_VER=$(rpm -qp --queryformat '%{EPOCH}:%{VERSION}-%{RELEASE}' "${AKMODNV_PATH}"/kmods/kmod-nvidia-*.rpm)
+dnf5 versionlock add "nvidia-*${KMOD_VER}*"
+
+
 if [[ "${IMAGE_NAME}" == "kinoite" ]]; then
     VARIANT_PKGS="supergfxctl-plasmoid supergfxctl"
 elif [[ "${IMAGE_NAME}" == "silverblue" ]]; then
