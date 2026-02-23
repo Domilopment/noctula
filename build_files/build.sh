@@ -10,7 +10,13 @@ KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 # Copied from https://github.com/ublue-os/aurora/blob/stable/build_files/base/03-packages.sh
 
-dnf5 versionlock delete mesa-*
+sudo dnf5 versionlock delete mesa-dri-drivers
+sudo dnf5 versionlock delete mesa-filesystem
+sudo dnf5 versionlock delete mesa-libEGL
+sudo dnf5 versionlock delete mesa-libGL
+sudo dnf5 versionlock delete mesa-libgbm
+sudo dnf5 versionlock delete mesa-va-drivers
+sudo dnf5 versionlock delete mesa-vulkan-drivers
 dnf5 distro-sync -y mesa-*
 
 ### Nvidia AKMODS
