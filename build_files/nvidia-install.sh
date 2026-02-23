@@ -62,8 +62,7 @@ fi
 source "${AKMODNV_PATH}"/kmods/nvidia-vars
 
 
-KMOD_VER=$(rpm -qp --queryformat '%{EPOCH}:%{VERSION}-%{RELEASE}' "${AKMODNV_PATH}"/kmods/kmod-nvidia-*.rpm)
-dnf5 versionlock add "nvidia-*${KMOD_VER}*"
+dnf5 --showduplicates --repo=fedora-nvidia-lts list nvidia-driver
 
 
 if [[ "${IMAGE_NAME}" == "kinoite" ]]; then
