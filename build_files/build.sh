@@ -10,13 +10,15 @@ KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 # Copied from https://github.com/ublue-os/aurora/blob/stable/build_files/base/03-packages.sh
 
-sudo dnf5 versionlock delete mesa-dri-drivers
-sudo dnf5 versionlock delete mesa-filesystem
-sudo dnf5 versionlock delete mesa-libEGL
-sudo dnf5 versionlock delete mesa-libGL
-sudo dnf5 versionlock delete mesa-libgbm
-sudo dnf5 versionlock delete mesa-va-drivers
-sudo dnf5 versionlock delete mesa-vulkan-drivers
+# use negativo17 for 3rd party packages with higher priority than default
+if ! grep -q fedora-multimedia <(dnf5 repolist); then
+  # Enable or Install Repofile
+  dnf5 config-manager setopt fedora-multimedia.enabled=1 ||
+    dnf5 config-manager addrepo --from-repofile="https://negativo17.org/repos/fedora-multimedia.repo"
+fi
+# Set higher priority
+dnf5 config-manager setopt fedora-multimedia.priority=90
+
 dnf5 distro-sync -y mesa-*
 
 ### Nvidia AKMODS
@@ -97,6 +99,10 @@ export DRACUT_NO_XATTR=1
 /usr/bin/dracut --no-hostonly --kver "${KERNEL_VERSION}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL_VERSION}/initramfs.img"
 chmod 0600 "/lib/modules/${KERNEL_VERSION}/initramfs.img"
 
+
+if [[ -f "/etc/yum.repos.d/fedora-multimedia.repo" ]]; then
+  sed -i 's@enabled=1@enabled=0@g' "/etc/yum.repos.d/fedora-multimedia.repo"
+fi
 
 # cleanup stage
 # Clean temporary files
