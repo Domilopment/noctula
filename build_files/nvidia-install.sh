@@ -81,7 +81,6 @@ dnf5 install -y \
     nvidia-container-toolkit \
     ${VARIANT_PKGS} \
     "${AKMODNV_PATH}"/kmods/kmod-nvidia-"${KERNEL_VERSION}"-"${NVIDIA_AKMOD_VERSION}"."${DIST_ARCH}".rpm \
-    --exclude=akmod-nvidia,dkms,dkms-nvidia --best=false
 
 # Ensure the version of the Nvidia module matches the driver
 KMOD_VERSION="$(rpm -q --queryformat '%{VERSION}' kmod-nvidia)"

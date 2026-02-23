@@ -23,6 +23,8 @@ dnf5 distro-sync -y mesa-*
 
 ### Nvidia AKMODS
 
+dnf5 versionlock add 'nvidia-*-3:580.126.09-1.fc43.*'
+
 # Copied from https://github.com/ublue-os/aurora/blob/main/build_files/base/03-install-kernel-akmods.sh
 
 # Fetch Nvidia RPMs
