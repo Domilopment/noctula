@@ -10,8 +10,10 @@ KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
 # Copied from https://github.com/ublue-os/aurora/blob/stable/build_files/base/03-packages.sh
 
+dnf5 versionlock list
 dnf5 versionlock delete mesa-*
 dnf5 distro-sync -y mesa-*
+dnf5 versionlock list
 
 ### Nvidia AKMODS
 
