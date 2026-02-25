@@ -36,6 +36,10 @@ MULTILIB=(
     mesa-vulkan-drivers.i686
 )
 
+for pkg in "${MULTILIB[@]}"; do
+    dnf5 versionlock delete "$pkg"
+done
+
 dnf5 install -y "${MULTILIB[@]}"
 
 # enable repos provided by ublue-os-nvidia-addons (enabling fedora-nvidia-lts)
