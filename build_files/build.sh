@@ -23,17 +23,6 @@ dnf5 distro-sync -y mesa-*
 
 ### Nvidia AKMODS
 
-dnf5 versionlock add \
-    libnvidia-fbc-3:580.126.09* \
-    libnvidia-ml-3:580.126.09.i686 \
-    libva-nvidia-driver-3:580.126.09* \
-    nvidia-driver-3:580.126.09* \
-    nvidia-driver-cuda-3:580.126.09* \
-    nvidia-driver-cuda-libs-3:580.126.09.i686 \
-    nvidia-driver-libs-3:580.126.09*.i686 \
-    nvidia-settings-3:580.126.09* \
-    nvidia-container-toolkit-3:580.126.09* \
-
 # Copied from https://github.com/ublue-os/aurora/blob/main/build_files/base/03-install-kernel-akmods.sh
 
 # Fetch Nvidia RPMs
