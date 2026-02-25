@@ -36,7 +36,7 @@ MULTILIB=(
     mesa-vulkan-drivers.i686
 )
 
-for pkg in "${MULTILIB[@]}"; do
+for pkg in "${MULTILIB[@]%.i686}"; do
     dnf5 versionlock delete "$pkg"
 done
 
