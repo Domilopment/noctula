@@ -19,7 +19,6 @@ fi
 # Set higher priority
 dnf5 config-manager setopt fedora-multimedia.priority=90
 
-dnf5 distro-sync -y mesa-*
 
 ### Nvidia AKMODS
 
@@ -100,6 +99,7 @@ export DRACUT_NO_XATTR=1
 chmod 0600 "/lib/modules/${KERNEL_VERSION}/initramfs.img"
 
 
+# Disable negativo17 multimedia again.
 if [[ -f "/etc/yum.repos.d/fedora-multimedia.repo" ]]; then
   sed -i 's@enabled=1@enabled=0@g' "/etc/yum.repos.d/fedora-multimedia.repo"
 fi

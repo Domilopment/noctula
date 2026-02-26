@@ -36,10 +36,6 @@ MULTILIB=(
     mesa-vulkan-drivers.i686
 )
 
-for pkg in "${MULTILIB[@]%.i686}"; do
-    dnf5 versionlock delete "$pkg"
-done
-
 dnf5 install -y "${MULTILIB[@]}"
 
 # enable repos provided by ublue-os-nvidia-addons (enabling fedora-nvidia-lts)
@@ -72,17 +68,6 @@ elif [[ "${IMAGE_NAME}" == "silverblue" ]]; then
 else
     VARIANT_PKGS=""
 fi
-
-dnf5 versionlock add \
-    libnvidia-fbc-3:580.126.09* \
-    libnvidia-ml-3:580.126.09.i686 \
-    libva-nvidia-driver-3:580.126.09* \
-    nvidia-driver-3:580.126.09* \
-    nvidia-driver-cuda-3:580.126.09* \
-    nvidia-driver-cuda-libs-3:580.126.09.i686 \
-    nvidia-driver-libs-3:580.126.09*.i686 \
-    nvidia-settings-3:580.126.09* \
-    nvidia-container-toolkit-3:580.126.09* \
 
 dnf5 install -y \
     libnvidia-fbc \
