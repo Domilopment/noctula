@@ -12,6 +12,15 @@ on:
     paths-ignore:
       - '**/README.md'
   workflow_dispatch:
+    inputs:
+      force_stable:
+        description: "Force stable tag (even if not Wednesday)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
 
 env:
   IMAGE_DESC: "My Customized Universal Blue Image"
@@ -59,11 +68,11 @@ jobs:
           # https://linux.die.net/man/1/date
           echo "date=$(date -u +%Y\-%m\-%d\T%H\:%M\:%S\Z)" >> $GITHUB_OUTPUT
 
-      - name: Check if Wednesday
+      - name: Check if Wednesday or forced stable
         id: weekday
         run: |
-          # determain if the actual day is Wednesday to create stable image
-          if [[ "$(date -u +%u)" = "3" ]]; then
+          # determain if the actual day is Wednesday to create stable image, or use override
+          if [[ "$(date -u +%u)" = "3" || "${{ github.event.inputs.force_stable }}" = "true" ]]; then
             echo "is_wednesday=true" >> $GITHUB_OUTPUT
           else
             echo "is_wednesday=false" >> $GITHUB_OUTPUT
