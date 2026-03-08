@@ -1,16 +1,10 @@
-ARG BASE_IMAGE="${BASE_IMAGE}:-ghcr.io/ublue-os/aurora-dx:stable"
-ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}:-43"
-ARG KERNEL="${KERNEL}:-6.17.12-300.fc43.x86_64"
-
-FROM ghcr.io/ublue-os/akmods-nvidia-lts:coreos-stable-${FEDORA_MAJOR_VERSION}-${KERNEL} AS akmods-nvidia-lts
-
 # Allow build scripts to be referenced without being copied into the final image
 FROM scratch AS ctx
 COPY build_files /
 COPY system_files /
 
 # Base Image
-FROM ${BASE_IMAGE} as base
+FROM ghcr.io/ublue-os/aurora-dx:stable
 
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bazzite:latest
@@ -40,7 +34,6 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
-    --mount=type=bind,from=akmods-nvidia-lts,src=/rpms,dst=/tmp/rpms/nvidia \
     /ctx/build.sh
 
 ### LINTING
