@@ -1,3 +1,4 @@
+export base_image := env("BASE_IMAGE", "ghcr.io/ublue-os/aurora-dx:stable")
 export image_name := env("IMAGE_NAME", "noctula") # output image name, usually same as repo name, change as needed
 export default_tag := env("DEFAULT_TAG", "latest")
 export bib_image := env("BIB_IMAGE", "quay.io/centos-bootc/bootc-image-builder:latest")
@@ -86,10 +87,15 @@ sudoif command *args:
 #
 
 # Build the image using the specified parameters
-build $target_image=image_name $tag=default_tag:
+build $target_image=image_name $tag=default_tag $base=base_image:
     #!/usr/bin/env bash
 
+    fedora_version = $(podman run --rm {{base}} rpm -E %fedora)
+    kernel_release = $(podman run --rm {{base}} rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
+
     BUILD_ARGS=()
+    BUILD_ARGS+=("--build-arg" "FEDORA_MAJOR_VERSION=${fedora_version}")
+    BUILD_ARGS+=("--build-arg" "KERNEL=${kernel_release}")
     if [[ -z "$(git status -s)" ]]; then
         BUILD_ARGS+=("--build-arg" "SHA_HEAD_SHORT=$(git rev-parse --short HEAD)")
     fi
