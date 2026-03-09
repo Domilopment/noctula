@@ -2,49 +2,6 @@
 
 set -ouex pipefail
 
-FEDORA_VERSION=$(rpm -E %fedora)
-KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
-
-
-### Aurora package Overrides
-
-# Copied from https://github.com/ublue-os/aurora/blob/stable/build_files/base/03-packages.sh
-
-# use negativo17 for 3rd party packages with higher priority than default
-if ! grep -q fedora-multimedia <(dnf5 repolist); then
-  # Enable or Install Repofile
-  dnf5 config-manager setopt fedora-multimedia.enabled=1 ||
-    dnf5 config-manager addrepo --from-repofile="https://negativo17.org/repos/fedora-multimedia.repo"
-fi
-# Set higher priority
-dnf5 config-manager setopt fedora-multimedia.priority=90
-
-
-### Nvidia AKMODS
-
-# Copied from https://github.com/ublue-os/aurora/blob/main/build_files/base/03-install-kernel-akmods.sh
-
-# Fetch Nvidia RPMs
-skopeo copy --retry-times 3 docker://ghcr.io/ublue-os/akmods-nvidia-lts:coreos-stable-"${FEDORA_VERSION}"-"${KERNEL_VERSION}" dir:/tmp/akmods-rpms
-NVIDIA_TARGZ=$(jq -r '.layers[].digest' </tmp/akmods-rpms/manifest.json | cut -d : -f 2)
-tar -xvzf /tmp/akmods-rpms/"$NVIDIA_TARGZ" -C /tmp/
-mv /tmp/rpms/* /tmp/akmods-rpms/
-
-# Exclude the Golang Nvidia Container Toolkit in Fedora Repo
-dnf5 config-manager setopt excludepkgs=golang-github-nvidia-container-toolkit
-
-# Install Nvidia RPMs
-curl --retry 3 -sSL "https://raw.githubusercontent.com/ublue-os/main/main/build_files/nvidia-install.sh" -o /tmp/nvidia-install.sh
-# enable nvidia lts repo
-sed -i 's@fedora-nvidia.enabled=1@fedora-nvidia-lts.enabled=1@g' /tmp/nvidia-install.sh
-chmod +x /tmp/nvidia-install.sh
-IMAGE_NAME="kinoite" RPMFUSION_MIRROR="" /tmp/nvidia-install.sh
-rm -f /usr/share/vulkan/icd.d/nouveau_icd.*.json
-ln -sf libnvidia-ml.so.1 /usr/lib64/libnvidia-ml.so
-tee /usr/lib/bootc/kargs.d/00-nvidia.toml <<EOF
-kargs = ["rd.driver.blacklist=nouveau", "modprobe.blacklist=nouveau", "nvidia-drm.modeset=1", "initcall_blacklist=simpledrm_platform_driver_init"]
-EOF
-
 ### Install packages
 
 # Packages can be installed from any enabled yum repo on the image.
@@ -91,24 +48,3 @@ EOF
 #### Example for enabling a System Unit File
 
 systemctl enable podman.socket
-
-
-# Ensure Initramfs is generated
-export DRACUT_NO_XATTR=1
-/usr/bin/dracut --no-hostonly --kver "${KERNEL_VERSION}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL_VERSION}/initramfs.img"
-chmod 0600 "/lib/modules/${KERNEL_VERSION}/initramfs.img"
-
-
-# Disable negativo17 multimedia again.
-if [[ -f "/etc/yum.repos.d/fedora-multimedia.repo" ]]; then
-  sed -i 's@enabled=1@enabled=0@g' "/etc/yum.repos.d/fedora-multimedia.repo"
-fi
-
-# cleanup stage
-# Clean temporary files
-rm -rf /tmp/*
-
-if [ ! -L /var/run ]; then
-  rm -rf /var/run
-  ln -s /run /var/run
-fi
