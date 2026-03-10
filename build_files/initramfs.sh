@@ -2,7 +2,7 @@
 
 echo "::group:: ===$(basename "$0")==="
 
-set -oue pipefail
+set -ouex pipefail
 
 # Copied from https://github.com/ublue-os/aurora/blob/main/build_files/base/19-initramfs.sh
 

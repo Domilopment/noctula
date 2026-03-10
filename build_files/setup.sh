@@ -2,7 +2,7 @@
 
 echo "::group:: ===$(basename "$0")==="
 
-set -oue pipefail
+set -ouex pipefail
 
 ### Aurora package Overrides
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "::group:: ===$(basename "$0")==="
+
 set -ouex pipefail
 
 ### Install packages
@@ -48,3 +50,5 @@ EOF
 #### Example for enabling a System Unit File
 
 systemctl enable podman.socket
+
+echo "::endgroup::"

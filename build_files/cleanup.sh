@@ -2,7 +2,7 @@
 
 echo "::group:: ===$(basename "$0")==="
 
-set -oue pipefail
+set -ouex pipefail
 
 # Disable negativo17 multimedia again.
 if [[ -f "/etc/yum.repos.d/fedora-multimedia.repo" ]]; then
