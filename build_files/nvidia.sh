@@ -7,7 +7,6 @@ set -ouex pipefail
 FEDORA_VERSION=$(rpm -E %fedora)
 KERNEL_VERSION=$(rpm -q kernel --qf "%{VERSION}-%{RELEASE}.%{ARCH}")
 
-
 ### Nvidia AKMODS
 
 # Copied from https://github.com/ublue-os/aurora/blob/main/build_files/base/03-install-kernel-akmods.sh
@@ -18,8 +17,8 @@ NVIDIA_TARGZ=$(jq -r '.layers[].digest' </tmp/akmods-rpms/manifest.json | cut -d
 tar -xvzf /tmp/akmods-rpms/"$NVIDIA_TARGZ" -C /tmp/
 mv /tmp/rpms/* /tmp/akmods-rpms/
 
-# Exclude the Golang Nvidia Container Toolkit in Fedora Repo
-dnf5 config-manager setopt excludepkgs=golang-github-nvidia-container-toolkit
+# Not available for Fedora 43 yet
+dnf config-manager setopt excludepkgs=golang-github-nvidia-container-toolkit
 
 # Install Nvidia RPMs
 IMAGE_NAME="kinoite" AKMODNV_PATH="/tmp/akmods-rpms" MULTILIB=1 /tmp/akmods-rpms/ublue-os/nvidia-install.sh
