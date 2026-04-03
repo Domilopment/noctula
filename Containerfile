@@ -3,6 +3,9 @@ FROM scratch AS ctx
 COPY build_files /
 COPY system_files /
 
+FROM ghcr.io/get-aurora-dev/common:latest AS common
+COPY --from=common /system_files/nvidia /system_files/nvidia
+
 # Base Image
 FROM ghcr.io/ublue-os/aurora-dx:stable
 
