@@ -1,10 +1,10 @@
+FROM ghcr.io/get-aurora-dev/common:latest AS common
+
 # Allow build scripts to be referenced without being copied into the final image
 FROM scratch AS ctx
 COPY build_files /
-COPY system_files /
-
-FROM ghcr.io/get-aurora-dev/common:latest AS common
 COPY --from=common /system_files/nvidia /system_files/nvidia
+COPY system_files /
 
 # Base Image
 FROM ghcr.io/ublue-os/aurora-dx:stable AS base
