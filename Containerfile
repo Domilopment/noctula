@@ -7,7 +7,7 @@ FROM ghcr.io/get-aurora-dev/common:latest AS common
 COPY --from=common /system_files/nvidia /system_files/nvidia
 
 # Base Image
-FROM ghcr.io/ublue-os/aurora-dx:stable
+FROM ghcr.io/ublue-os/aurora-dx:stable AS base
 
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bazzite:latest
