@@ -13,9 +13,4 @@ fi
 # Clean temporary files
 rm -rf /tmp/*
 
-if [ ! -L /var/run ]; then
-  rm -rf /var/run
-  ln -s /run /var/run
-fi
-
 echo "::endgroup::"
