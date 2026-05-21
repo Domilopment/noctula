@@ -21,7 +21,7 @@ mv /tmp/rpms/* /tmp/akmods-rpms/
 dnf config-manager setopt excludepkgs=golang-github-nvidia-container-toolkit
 
 # Install Nvidia RPMs
-IMAGE_NAME="kinoite" AKMODNV_PATH="/tmp/akmods-rpms" MULTILIB=1 /tmp/akmods-rpms/ublue-os/nvidia-install.sh
+IMAGE_NAME="kinoite" AKMODNV_PATH="/tmp/akmods-rpms" MULTILIB=0 /tmp/akmods-rpms/ublue-os/nvidia-install.sh
 rm -f /usr/share/vulkan/icd.d/nouveau_icd.*.json
 ln -sf libnvidia-ml.so.1 /usr/lib64/libnvidia-ml.so
 tee /usr/lib/bootc/kargs.d/00-nvidia.toml <<EOF
