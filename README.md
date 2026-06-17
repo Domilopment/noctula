@@ -49,10 +49,10 @@ First, install the [cosign CLI tool](https://edu.chainguard.dev/open-source/sigs
 With the cosign tool installed, run inside your repo folder:
 
 ```bash
-cosign generate-key-pair
+COSIGN_PASSWORD="" cosign generate-key-pair
 ```
 
-Do NOT put in a password when it asks you to, just press enter. The signing key will be used in GitHub Actions and will not work if it is encrypted.
+The signing key will be used in GitHub Actions and will not work if it is password protected.
 
 > [!WARNING]
 > Be careful to *never* accidentally commit `cosign.key` into your git repo. If this key goes out to the public, the security of your repository is compromised.
@@ -62,10 +62,10 @@ Next, you need to add the key to GitHub. This makes use of GitHub's secret signi
 <details>
     <summary>Using the Github Web Interface (preferred)</summary>
 
-    Go to your repository settings, under `Secrets and Variables` -> `Actions`
-    ![image](https://user-images.githubusercontent.com/1264109/216735595-0ecf1b66-b9ee-439e-87d7-c8cc43c2110a.png)
-    Add a new secret and name it `SIGNING_SECRET`, then paste the contents of `cosign.key` into the secret and save it. Make sure it's the .key file and not the .pub file. Once done, it should look like this:
-    ![image](https://user-images.githubusercontent.com/1264109/216735690-2d19271f-cee2-45ac-a039-23e6a4c16b34.png)
+Go to your repository settings, under `Secrets and Variables` -> `Actions`
+![image](https://user-images.githubusercontent.com/1264109/216735595-0ecf1b66-b9ee-439e-87d7-c8cc43c2110a.png)
+Add a new secret and name it `SIGNING_SECRET`, then paste the contents of `cosign.key` into the secret and save it. Make sure it's the .key file and not the .pub file. Once done, it should look like this:
+![image](https://user-images.githubusercontent.com/1264109/216735690-2d19271f-cee2-45ac-a039-23e6a4c16b34.png)
 </details>
 <details>
 <summary>Using the Github CLI</summary>
@@ -85,13 +85,13 @@ For a base image, you can choose any of the Universal Blue images or start from 
 <details>
     <summary>Base Images</summary>
 
-    - Bazzite: `ghcr.io/ublue-os/bazzite:stable`
-    - Aurora: `ghcr.io/ublue-os/aurora:stable`
-    - Bluefin: `ghcr.io/ublue-os/bluefin:stable`
-    - Universal Blue Base: `ghcr.io/ublue-os/base-main:latest`
-    - Fedora: `quay.io/fedora/fedora-bootc:42`
+- Bazzite: `ghcr.io/ublue-os/bazzite:stable`
+- Aurora: `ghcr.io/ublue-os/aurora:stable`
+- Bluefin: `ghcr.io/ublue-os/bluefin:stable`
+- Universal Blue Base: `ghcr.io/ublue-os/base-main:latest`
+- Fedora: `quay.io/fedora/fedora-bootc:44`
 
-    You can find more Universal Blue images on the [packages page](https://github.com/orgs/ublue-os/packages).
+You can find more Universal Blue images on the [packages page](https://github.com/orgs/ublue-os/packages).
 </details>
 
 If you don't know which image to pick, choosing the one your system is currently on is the best bet for a smooth transition. To find out what image your system currently uses, run the following command:
@@ -102,11 +102,11 @@ This will show you all the info you need to know about your current image. The i
 
 ### Step 2c: Changing Names
 
-Change the first line in the [Justfile](./Justfile) to your image's name.
+Change the `IMAGE_NAME` and `REPO_ORGANIZATION` variable inside the `image-template.env`
 
 To commit and push all the files changed and added in step 2 into your Github repository:
 ```bash
-git add Containerfile Justfile cosign.pub
+git add Containerfile image-template.env cosign.pub
 git commit -m "Initial Setup"
 git push
 ```
@@ -132,7 +132,7 @@ The [build.sh](./build_files/build.sh) file is called from your Containerfile. I
 
 ## build.yml
 
-The [build.yml](./.github/workflows/build.yml) Github Actions workflow creates your custom OCI image and publishes it to the Github Container Registry (GHCR). By default, the image name will match the Github repository name. There are several environment variables at the start of the workflow which may be of interest to change.
+The [build.yml](./.github/workflows/build.yml) Github Actions workflow creates your custom OCI image and publishes it to the Github Container Registry (GHCR). By default, the image name will match the Github repository name.
 
 # Building Disk Images
 
@@ -173,11 +173,15 @@ To use it, you must have installed [just](https://just.systems/man/en/introducti
 
 ## Environment Variables
 
+These are all sourced from the `image-template.env` file.
+
 - `image_name`: The name of the image (default: "image-template").
 - `default_tag`: The default tag for the image (default: "latest").
 - `bib_image`: The Bootc Image Builder (BIB) image (default: "quay.io/centos-bootc/bootc-image-builder:latest").
 
 ## Building The Image
+
+All these recipes will work (with default values) without supplying any arguments to them, e.g. `just build`
 
 ### `just build`
 
@@ -190,6 +194,44 @@ just build $target_image $tag
 Arguments:
 - `$target_image`: The tag you want to apply to the image (default: `$image_name`).
 - `$tag`: The tag for the image (default: `$default_tag`).
+
+### Rechunking
+We can flatten the layers of container images to make sure there isn't a single huge layer when your image gets published.
+This does not make your image faster to download, just provides better resumability.
+
+#### `just ostree-rechunk`
+Rechunks the existing Image with [rpm-ostree](https://coreos.github.io/rpm-ostree/build-chunked-oci/)
+
+```bash
+just ostree-rechunk $target_image $tag
+```
+
+#### `just rechunk`
+Rechunks the existing Image with [chunkah](https://github.com/coreos/chunkah), this is probably gonna be the default here at some point, try it out, it's cool.
+
+```bash
+just rechunk $target_image $tag
+```
+
+### Switching to the locally built image for testing
+
+The image has to be in the containers-storage owned by root, to be able to rebase to it, see the `_rootful_load_image` recipe.
+
+`sudo just build` and `sudo just ostree-rechunk` builds directly as root and allows you to skip the transfer to the root containers-storage.
+
+You can rebase to all the images that are in your containers-storage:
+
+```
+sudo podman image list --filter=label=containers.bootc=1
+```
+
+See [man bootc switch](https://bootc.dev/bootc/man/bootc-switch.8.html) for more info.
+
+```
+sudo bootc switch --transport containers-storage localhost/myimage:latest
+```
+
+and reboot your system!
 
 ## Building and Running Virtual Machines and ISOs
 
@@ -248,6 +290,10 @@ Runs shell check on all Bash scripts.
 ### `just format`
 
 Runs shfmt on all Bash scripts.
+
+## Additional resources
+
+For additional driver support, ublue maintains a set of scripts and container images available at [ublue-akmod](https://github.com/ublue-os/akmods). These images include the necessary scripts to install multiple kernel drivers within the container (Nvidia, OpenRazer, Framework...). The documentation provides guidance on how to properly integrate these drivers into your container image.
 
 ## Community Examples
 
