@@ -108,7 +108,8 @@ jobs:
                         ${IMAGE_NAME} \
                         ${DEFAULT_TAG})"
 
-          if [[ "$(date -u +%u)" = "3" || "${{ github.event.inputs.force_stable }}" = "true" ]]; then
+          # Build release with stable tags on Wednesdays or when manually requested
+          if [[ "$(date -u +%u)" = "3" || "${{ github.event.inputs.build_stable }}" = "true" ]]; then
             stable_tags="$(just generate-build-tags \
                             ${IMAGE_NAME} \
                             stable)"
