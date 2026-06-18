@@ -12,6 +12,15 @@ on:
     paths-ignore:
       - '**/README.md'
   workflow_dispatch:
+    inputs:
+      build_stable:
+        description: "Force stable tag (even if not Wednesday)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
 
 env:
   IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"  # do not edit
@@ -98,6 +107,14 @@ jobs:
           alias_tags="$(just generate-build-tags \
                         ${IMAGE_NAME} \
                         ${DEFAULT_TAG})"
+
+          if [[ "$(date -u +%u)" = "3" || "${{ github.event.inputs.force_stable }}" = "true" ]]; then
+            stable_tags="$(just generate-build-tags \
+                            ${IMAGE_NAME} \
+                            stable)"
+
+            alias_tags="${alias_tags} ${stable_tags}"
+          fi
 
           echo "Tags for this Action..."
           echo "${alias_tags}"
