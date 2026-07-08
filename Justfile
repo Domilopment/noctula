@@ -107,7 +107,7 @@ build $target_image=image_name $tag=default_tag:
     if [[ -z "$(git status -s)" ]]; then
         GIT_SHA=$(git rev-parse --short HEAD)
 
-        BUILD_ARGS+=("--build-arg" "VERSION=$(date +%Y%m%d)-${GIT_SHA}")
+        BUILD_ARGS+=("--build-arg" "VERSION={{ default_tag }}.$(date +%Y%m%d)-${GIT_SHA}")
 
         LABELS+=("--label" "io.artifacthub.package.readme-url=https://raw.githubusercontent.com/{{ repo_organization }}/{{ image_name }}/${GIT_SHA}/README.md")
         LABELS+=("--label" "org.opencontainers.image.documentation=https://raw.githubusercontent.com/{{ repo_organization }}/{{ image_name }}/${GIT_SHA}/README.md")

@@ -45,6 +45,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     /ctx/setup.sh && \
     /ctx/nvidia.sh && \
     /ctx/build.sh && \
+    /ctx/branding.sh && \
     /ctx/initramfs.sh && \
     /ctx/cleanup.sh
 
