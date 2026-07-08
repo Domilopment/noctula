@@ -99,9 +99,16 @@ build $target_image=image_name $tag=default_tag:
     set -euox pipefail
 
     BUILD_ARGS=()
+    BUILD_ARGS+=("--build-arg" "IMAGE_NAME=${target_image}")
+    BUILD_ARGS+=("--build-arg" "IMAGE_VENDOR={{ repo_organization }}")
+    BUILD_ARGS+=("--build-arg" "IMAGE_TAG=${tag}")
+
     LABELS=()
     if [[ -z "$(git status -s)" ]]; then
         GIT_SHA=$(git rev-parse --short HEAD)
+
+        BUILD_ARGS+=("--build-arg" "VERSION=$(date +%Y%m%d)-${GIT_SHA}")
+
         LABELS+=("--label" "io.artifacthub.package.readme-url=https://raw.githubusercontent.com/{{ repo_organization }}/{{ image_name }}/${GIT_SHA}/README.md")
         LABELS+=("--label" "org.opencontainers.image.documentation=https://raw.githubusercontent.com/{{ repo_organization }}/{{ image_name }}/${GIT_SHA}/README.md")
         LABELS+=("--label" "org.opencontainers.image.source=https://github.com/{{ repo_organization }}/{{ image_name }}/blob/${GIT_SHA}/Containerfile")
@@ -225,11 +232,17 @@ tag-images $target_image=image_name $tag=default_tag tags="":
 # Image Name
 [group('Utility')]
 [private]
-image_name $target_image=image_name:
+image_name $target_image=image_name $flavor="main":
     #!/usr/bin/env bash
     set -eoux pipefail
 
-    echo "${image_name}"
+    if [[ "{{ flavor }}" =~ main ]]; then
+        image_flavor_name={{ target_image }}
+    else
+        image_flavor_name="{{ target_image }}-{{ flavor }}"
+    fi
+
+    echo "${image_flavor_name}"
 
 # Command: _rootful_load_image
 # Description: This script checks if the current user is root or running under sudo. If not, it attempts to resolve the image tag using podman inspect.

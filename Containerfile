@@ -18,6 +18,11 @@ FROM ghcr.io/ublue-os/aurora-dx:stable AS base
 # Fedora base image: quay.io/fedora/fedora-bootc:44
 # CentOS base images: quay.io/centos-bootc/centos-bootc:stream10
 
+ARG IMAGE_NAME="noctula"
+ARG IMAGE_VENDOR="domilopment"
+ARG IMAGE_TAG="latest"
+ARG VERSION=""
+
 ### [IM]MUTABLE /opt
 ## Some bootable images, like Fedora, have /opt symlinked to /var/opt, in order to
 ## make it mutable/writable for users. However, some packages write files to this directory,
