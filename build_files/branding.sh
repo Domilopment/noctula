@@ -24,7 +24,7 @@ if [[ "${IMAGE_NAME}" =~ nvidia ]]; then
     image_flavor="nvidia"
 fi
 
-cat >$IMAGE_INF <<EOF
+cat >$IMAGE_INFO <<EOF
 {
   "image-name": "$IMAGE_NAME",
   "image-flavor": "$image_flavor",
