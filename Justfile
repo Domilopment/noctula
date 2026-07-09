@@ -234,9 +234,9 @@ tag-images $target_image=image_name $tag=default_tag tags="":
     podman images
 
 # Image Name
-[group('Utility')]
 [arg("flavor", long="flavor", short="f")]
 [arg("target_image", long="target_image", short="i")]
+[group('Utility')]
 [private]
 image_name $target_image=image_name $flavor="main":
     #!/usr/bin/env bash
