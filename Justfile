@@ -99,7 +99,7 @@ build $target_image=image_name $tag=default_tag:
     set -euox pipefail
 
     kernel_release=$(skopeo inspect --retry-times 3 docker://ghcr.io/ublue-os/aurora:stable | jq -r '.Labels["ostree.linux"]')
-    fedora_version=$(echo "$kernel_release" | grep -oP 'fc\K[0-9]+'))
+    fedora_version=$(echo "$kernel_release" | grep -oP 'fc\K[0-9]+')
 
     BUILD_ARGS=()
     BUILD_ARGS+=("--build-arg" "FEDORA_MAJOR_VERSION=${fedora_version}")
