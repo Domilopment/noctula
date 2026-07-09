@@ -67,7 +67,7 @@ jobs:
         env:
           MATRIX_IMAGE_FLAVOR: ${{ matrix.image_flavor }}
         run: |
-          IMAGE_NAME=$(just image_name "${MATRIX_IMAGE_FLAVOR}")
+          IMAGE_NAME=$(just image_name --flavor "${MATRIX_IMAGE_FLAVOR}")
 
           echo "IMAGE_NAME=${IMAGE_NAME}" >> $GITHUB_ENV
 
