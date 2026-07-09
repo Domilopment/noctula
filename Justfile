@@ -98,9 +98,14 @@ build $target_image=image_name $tag=default_tag:
 
     set -euox pipefail
 
+    kernel_release=$(skopeo inspect --retry-times 3 docker://ghcr.io/ublue-os/aurora:stable | jq -r '.Labels["ostree.linux"]')
+    fedora_version=$(echo "$kernel_release" | grep -oP 'fc\K[0-9]+'))
+
     BUILD_ARGS=()
+    BUILD_ARGS+=("--build-arg" "FEDORA_MAJOR_VERSION=${fedora_version}")
     BUILD_ARGS+=("--build-arg" "IMAGE_NAME=${target_image}")
     BUILD_ARGS+=("--build-arg" "IMAGE_VENDOR={{ repo_organization }}")
+    BUILD_ARGS+=("--build-arg" "KERNEL=${kernel_release}")
     BUILD_ARGS+=("--build-arg" "IMAGE_TAG=${tag}")
 
     LABELS=()
@@ -130,6 +135,11 @@ build $target_image=image_name $tag=default_tag:
 
     if [[ "${image_name}" =~ nvidia ]]; then
         BUILD_ARGS+=("--cpp-flag=-DNVIDIA")
+
+        case "${image_name}" in
+            *nvidia-open*) BUILD_ARGS+=("--build-arg" "NVIDIA_FLAVOR=-nvidia-open") ;;
+            *nvidia-lts*)  BUILD_ARGS+=("--build-arg" "NVIDIA_FLAVOR=-nvidia-lts")  ;;
+        esac
     fi
 
     # This actually builds the image!

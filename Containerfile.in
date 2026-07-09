@@ -1,4 +1,12 @@
+ARG FEDORA_MAJOR_VERSION
+ARG NVIDIA_FLAVOR
+ARG KERNEL
+
 FROM ghcr.io/get-aurora-dev/common:latest AS common
+
+#if defined(NVIDIA)
+FROM ghcr.io/ublue-os/akmods-nvidia${NVIDIA_FLAVOR}:coreos-stable-${FEDORA_MAJOR_VERSION}-${KERNEL} AS akmods-nvidia
+#endif
 
 # Allow build scripts to be referenced without being copied into the final image
 FROM scratch AS ctx
@@ -51,6 +59,7 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
+    --mount=type=bind,from=akmods-nvidia,src=/rpms,dst=/tmp/rpms/nvidia
     /ctx/nvidia.sh
 #endif
 
