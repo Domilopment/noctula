@@ -43,8 +43,21 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/setup.sh && \
-    /ctx/nvidia.sh && \
-    /ctx/build.sh && \
+    /ctx/build.sh
+
+# /* Include NVIDIA akmod (nvidia-lts for now) */
+#if defined(NVIDIA)
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
+    /ctx/nvidia.sh
+#endif
+
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
     /ctx/branding.sh && \
     /ctx/initramfs.sh && \
     /ctx/cleanup.sh
