@@ -236,7 +236,7 @@ tag-images $target_image=image_name $tag=default_tag tags="":
 # Image Name
 [group('Utility')]
 [private]
-image_name $target_image=image_name $flavor="main":
+image_name $flavor="main" $target_image=image_name:
     #!/usr/bin/env bash
     set -eoux pipefail
 
