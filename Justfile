@@ -137,8 +137,8 @@ build $target_image=image_name $tag=default_tag:
         BUILD_ARGS+=("--cpp-flag=-DNVIDIA")
 
         case "${image_name}" in
-            *nvidia-open*) BUILD_ARGS+=("--build-arg" "NVIDIA_FLAVOR=-nvidia-open") ;;
-            *nvidia-lts*)  BUILD_ARGS+=("--build-arg" "NVIDIA_FLAVOR=-nvidia-lts")  ;;
+            *nvidia-open*) BUILD_ARGS+=("--build-arg" "NVIDIA_FLAVOR=-open") ;;
+            *nvidia-lts*)  BUILD_ARGS+=("--build-arg" "NVIDIA_FLAVOR=-lts")  ;;
         esac
     fi
 
