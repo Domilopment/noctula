@@ -31,8 +31,8 @@ cat >$IMAGE_INFO <<EOF
   "image-vendor": "$IMAGE_VENDOR",
   "image-ref": "$IMAGE_REF",
   "image-tag": "$IMAGE_TAG",
-  "base-image-name": ""$BASE_IMAGE_NAME",
-  "fedora-version": "$(rpm -E %fedora)"
+  "base-image-name": "$BASE_IMAGE_NAME",
+  "fedora-version": "$FEDORA_MAJOR_VERSION"
 }
 EOF
 
@@ -49,13 +49,30 @@ sed -i "s|^SUPPORT_URL=.*|SUPPORT_URL=\"$SUPPORT_URL\"|" /usr/lib/os-release
 sed -i "s|^BUG_REPORT_URL=.*|BUG_REPORT_URL=\"$BUG_SUPPORT_URL\"|" /usr/lib/os-release
 sed -i "s|^CPE_NAME=.*|CPE_NAME=\"cpe:/o:domilopment:${IMAGE_PRETTY_NAME,}:${VERSION}\"|" /usr/lib/os-release
 sed -i "s|^DEFAULT_HOSTNAME=.*|DEFAULT_HOSTNAME=\"${IMAGE_PRETTY_NAME,}\"|" /usr/lib/os-release
-sed -i "s|^ID=fedora|ID=${IMAGE_PRETTY_NAME,}\nID_LIKE=\"${IMAGE_LIKE}\"|" /usr/lib/os-release
+sed -i "s|^ID=.*|ID=${IMAGE_PRETTY_NAME,}|" /usr/lib/os-release
+sed -i "s|^ID_LIKE=.*|ID_LIKE==\"${IMAGE_LIKE}\"|" /usr/lib/os-release
 sed -i "/^REDHAT_BUGZILLA_PRODUCT=/d; /^REDHAT_BUGZILLA_PRODUCT_VERSION=/d; /^REDHAT_SUPPORT_PRODUCT=/d; /^REDHAT_SUPPORT_PRODUCT_VERSION=/d" /usr/lib/os-release
 sed -i "s|^VERSION_CODENAME=.*|VERSION_CODENAME=\"$CODE_NAME\"|" /usr/lib/os-release
 sed -i "s|^VERSION=.*|VERSION=\"${VERSION} (${BASE_IMAGE_NAME^})\"|" /usr/lib/os-release
 sed -i "s|^OSTREE_VERSION=.*|OSTREE_VERSION=\'${VERSION}\'|" /usr/lib/os-release
-sed -i "s|^IMAGE_ID=.*|IMAGE_ID=\"${IMAGE_NAME}\"|" /usr/lib/os-release
-sed -i "s|^IMAGE_VERSION=.*|IMAGE_VERSION=\"${VERSION}\"|" /usr/lib/os-release
+
+if grep -q '^BUILD_ID=' /usr/lib/os-release; then
+  sed -i "s|^BUILD_ID=.*|BUILD_ID=\"$SHA_HEAD_SHORT\"|" /usr/lib/os-release
+else
+  echo "BUILD_ID=\"$SHA_HEAD_SHORT\"" >> /usr/lib/os-release
+fi
+
+if grep -q '^IMAGE_ID=' /usr/lib/os-release; then
+  sed -i "s|^IMAGE_ID=.*|IMAGE_ID=\"${IMAGE_NAME}\"|" /usr/lib/os-release
+else
+  echo "IMAGE_ID=\"${IMAGE_NAME}\"" >> /usr/lib/os-release
+fi
+
+if grep -q '^IMAGE_VERSION=' /usr/lib/os-release; then
+  sed -i "s|^IMAGE_VERSION=.*|IMAGE_VERSION=\"${VERSION}\"|" /usr/lib/os-release
+else
+  echo "IMAGE_VERSION=\"${VERSION}\"" >> /usr/lib/os-release
+fi
 
 ln -sf /usr/lib/os-release /etc/os-release
 

@@ -29,6 +29,7 @@ FROM ghcr.io/ublue-os/aurora-dx:stable AS base
 ARG IMAGE_NAME="noctula"
 ARG IMAGE_VENDOR="domilopment"
 ARG IMAGE_TAG="latest"
+ARG SHA_HEAD_SHORT=""
 ARG VERSION=""
 
 ### [IM]MUTABLE /opt
