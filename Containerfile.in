@@ -2,8 +2,6 @@ ARG FEDORA_MAJOR_VERSION
 ARG NVIDIA_FLAVOR
 ARG KERNEL
 
-FROM ghcr.io/get-aurora-dev/common:latest AS common
-
 #if defined(NVIDIA)
 FROM ghcr.io/ublue-os/akmods-nvidia${NVIDIA_FLAVOR}:coreos-stable-${FEDORA_MAJOR_VERSION}-${KERNEL} AS akmods-nvidia
 #endif
@@ -12,7 +10,7 @@ FROM ghcr.io/ublue-os/akmods-nvidia${NVIDIA_FLAVOR}:coreos-stable-${FEDORA_MAJOR
 FROM scratch AS ctx
 COPY build_files /
 COPY system_files /system_files
-COPY --from=common /system_files/nvidia /system_files/nvidia
+COPY aurorafin-shared/system_files/nvidia /system_files/nvidia
 
 # Base Image
 FROM ghcr.io/ublue-os/aurora-dx:stable AS base

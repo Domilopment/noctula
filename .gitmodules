@@ -1,0 +1,3 @@
+[submodule "aurorafin-shared"]
+	path = aurorafin-shared
+	url = https://github.com/ublue-os/aurorafin-shared.git
