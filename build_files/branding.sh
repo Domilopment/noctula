@@ -14,7 +14,7 @@ CODE_NAME="Nightfall"
 VERSION="${VERSION:-00.00000000}"
 
 IMAGE_INFO="/usr/share/ublue-os/image-info.json"
-IMAGE_REF="ostree-image-signed:docker://ghcr.io/domilopment/noctula"
+IMAGE_REF="ostree-image-signed:docker://ghcr.io/$IMAGE_VENDOR/$IMAGE_NAME"
 
 BASE_IMAGE_NAME="kinoite"
 
