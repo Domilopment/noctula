@@ -34,8 +34,8 @@ configure-waydroid ACTION="":
       git clone https://github.com/ublue-os/waydroid_script.git --depth 1 /tmp/waydroid_script
       python -m venv /tmp/waydroid_script/venv
       source /tmp/waydroid_script/venv/bin/activate
-      sudo pip install -r /tmp/waydroid_script/requirements.txt
-      sudo /tmp/waydroid_script/main.py
+      pip install -r /tmp/waydroid_script/requirements.txt
+      sudo /tmp/waydroid_script/venv/bin/python /tmp/waydroid_script/main.py
       deactivate
       sudo rm -rf /tmp/waydroid_script
     elif [[ "${OPTION,,}" =~ gpu ]]; then
