@@ -19,8 +19,8 @@ configure-waydroid ACTION="":
       exit 0
     elif [ "$OPTION" == "" ]; then
       echo "${bold}Waydroid Setup${normal}"
-      echo "Please read the $(Urllink "https://docs.bazzite.gg/Installing_and_Managing_Software/Waydroid_Setup_Guide/" "Waydroid setup documentation") before continuing"
-      OPTION=$(Choose "Initialize Waydroid" "Configure Waydroid" "Select GPU for Waydroid" "Reset Waydroid (also removes waydroid-related files from user folder)" "Install waydroid-helper (https://github.com/waydroid-helper/waydroid-helper)")
+      printf "Please read the \033]8;;https://docs.bazzite.gg/Installing_and_Managing_Software/Waydroid_Setup_Guide/\033\\Waydroid setup documentation\033]8;;\033\\ before continuing.\n"
+      OPTION=$(gum choose "Initialize Waydroid" "Configure Waydroid" "Select GPU for Waydroid" "Reset Waydroid (also removes waydroid-related files from user folder)" "Install waydroid-helper")
     fi
     if [[ "${OPTION,,}" =~ ^init ]]; then
       sudo systemctl enable --now waydroid-container
