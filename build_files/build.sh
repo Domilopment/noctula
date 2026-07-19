@@ -36,7 +36,10 @@ EOF
 # this installs waydroid
 dnf5 install -y waydroid
 sed -i~ -E 's/=.\$\(command -v (nft|ip6?tables-legacy).*/=/g' /usr/lib/waydroid/data/scripts/waydroid-net.sh
-echo "import \"/usr/share/ublue-os/just/82-bazzite-waydroid.just\"" >> /usr/share/ublue-os/justfile
+echo "import \"/usr/share/ublue-os/just/82-bazzite-waydroid.just\"" >> /usr/share/ublue-os/just/00-entry.just
+cat >/usr/lib/tmpfiles.d/waydroid.conf <<EOF
+d /var/lib/waydroid 0755 root root - -
+EOF
 
 # this adss unity repo installs unityhub
 # add unity repo
