@@ -6,9 +6,6 @@ alias setup-waydroid := configure-waydroid
 [group("apps")]
 configure-waydroid ACTION="":
     #!/usr/bin/bash
-    source /usr/lib/ujust/ujust.sh
-    IMAGE_INFO="/usr/share/ublue-os/image-info.json"
-    IMAGE_NAME=$(jq -r '."image-name"' < $IMAGE_INFO)
     OPTION={{ ACTION }}
     if [ "$OPTION" == "help" ]; then
       echo "Usage: ujust configure-waydroid <option>"
