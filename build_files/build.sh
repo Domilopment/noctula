@@ -33,6 +33,11 @@ L /var/usrlocal/bin/compose-bridge - - - - /usr/lib/opt/docker-desktop/bin/compo
 L /var/usrlocal/bin/docker - - - - /usr/bin/docker
 EOF
 
+# this installs waydroid
+dnf5 install -y waydroid
+sed -i~ -E 's/=.\$\(command -v (nft|ip6?tables-legacy).*/=/g' /usr/lib/waydroid/data/scripts/waydroid-net.sh
+echo "import \"/usr/share/ublue-os/just/82-bazzite-waydroid.just\"" >> /usr/share/ublue-os/justfile
+
 # this adss unity repo installs unityhub
 # add unity repo
 #sh -c 'echo -e "[unityhub]\nname=Unity Hub\nbaseurl=https://hub.unity3d.com/linux/repos/rpm/stable\nenabled=1\ngpgcheck=1\ngpgkey=https://hub.unity3d.com/linux/repos/rpm/stable/repodata/repomd.xml.key\nrepo_gpgcheck=1" > /etc/yum.repos.d/unityhub.repo'
@@ -53,5 +58,6 @@ EOF
 #### Example for enabling a System Unit File
 
 systemctl enable podman.socket
+systemctl disable waydroid-container.service
 
 echo "::endgroup::"
