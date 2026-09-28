@@ -17,4 +17,8 @@ fi
 # Set higher priority
 dnf5 config-manager setopt fedora-multimedia.priority=90
 
+#Setup terra extras repo
+dnf5 -y install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release-extras
+dnf5 -y config-manager setopt "*terra*".priority=1
+
 echo "::endgroup::"

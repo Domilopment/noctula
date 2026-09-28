@@ -9,6 +9,11 @@ if [[ -f "/etc/yum.repos.d/fedora-multimedia.repo" ]]; then
   sed -i 's@enabled=1@enabled=0@g' "/etc/yum.repos.d/fedora-multimedia.repo"
 fi
 
+# Disable terra extras repo
+if [[ -f "/etc/yum.repos.d/fedora-multimedia.repo" ]]; then
+  sed -i 's@enabled=1@enabled=0@g' "/etc/yum.repos.d/terra-extras.repo"
+fi
+
 # cleanup stage
 # Clean temporary files
 rm -rf /tmp/*

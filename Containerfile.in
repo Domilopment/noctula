@@ -62,7 +62,8 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
     --mount=type=bind,from=akmods-nvidia,src=/rpms,dst=/tmp/rpms/nvidia \
-    /ctx/nvidia.sh
+    /ctx/nvidia.sh && \
+    dnf5 -y swap --repo terra-extras waydroid waydroid-nvidia
 #endif
 
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
