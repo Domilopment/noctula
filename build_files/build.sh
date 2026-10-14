@@ -41,6 +41,17 @@ cat >/usr/lib/tmpfiles.d/waydroid.conf <<EOF
 d /var/lib/waydroid 0755 root root - -
 EOF
 
+tee /etc/yum.repos.d/nextcloud-office.repo <<'EOF'
+[nextcloud-office]
+name=Nextcloud Office
+baseurl=https://download.nextcloud.com/office/repo/rpm/stable/$basearch
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://download.nextcloud.com/office/repo/nextcloud-office.asc
+EOF
+dnf5 install -y nextcloud-office-desktopeditors
+
 # this adss unity repo installs unityhub
 # add unity repo
 #sh -c 'echo -e "[unityhub]\nname=Unity Hub\nbaseurl=https://hub.unity3d.com/linux/repos/rpm/stable\nenabled=1\ngpgcheck=1\ngpgkey=https://hub.unity3d.com/linux/repos/rpm/stable/repodata/repomd.xml.key\nrepo_gpgcheck=1" > /etc/yum.repos.d/unityhub.repo'
